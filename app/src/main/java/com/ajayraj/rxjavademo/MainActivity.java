@@ -8,18 +8,18 @@ import com.ajayraj.rxjavademo.data.DataSource;
 import com.ajayraj.rxjavademo.model.Task;
 
 
-import org.reactivestreams.Subscription;
 
-import io.reactivex.BackpressureStrategy;
 import io.reactivex.Flowable;
-import io.reactivex.FlowableSubscriber;
 import io.reactivex.Observable;
 import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
 public class MainActivity extends AppCompatActivity {
+
+    CompositeDisposable compositeDisposable=new CompositeDisposable();
 private static  final String TAG=MainActivity.class.getName();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,6 +41,8 @@ private static  final String TAG=MainActivity.class.getName();
         taskObservable.subscribe(new Observer<Task>() {
             @Override
             public void onSubscribe(Disposable d) {
+                //disposable added to main activity
+                compositeDisposable.add(d);
                 Log.d(TAG, "onSubscribe: : " + d.toString());
 
             }
@@ -125,4 +127,10 @@ private static  final String TAG=MainActivity.class.getName();
         });*/
     }
 
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        compositeDisposable.clear();
+    }
 }
