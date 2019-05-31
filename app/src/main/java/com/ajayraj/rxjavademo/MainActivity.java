@@ -8,9 +8,11 @@ import com.ajayraj.rxjavademo.data.DataSource;
 import com.ajayraj.rxjavademo.model.Task;
 
 
+import org.reactivestreams.Subscription;
 
-
-
+import io.reactivex.BackpressureStrategy;
+import io.reactivex.Flowable;
+import io.reactivex.FlowableSubscriber;
 import io.reactivex.Observable;
 import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -25,6 +27,7 @@ private static  final String TAG=MainActivity.class.getName();
         setContentView(R.layout.activity_main);
 
         inIt();
+        flowable();
     }
 
     private  void inIt(){
@@ -38,7 +41,7 @@ private static  final String TAG=MainActivity.class.getName();
         taskObservable.subscribe(new Observer<Task>() {
             @Override
             public void onSubscribe(Disposable d) {
-                Log.d(TAG, "onNext: : " + d.toString());
+                Log.d(TAG, "onSubscribe: : " + d.toString());
 
             }
 
@@ -50,7 +53,7 @@ private static  final String TAG=MainActivity.class.getName();
 
             @Override
             public void onError(Throwable e) {
-                Log.d(TAG, "onNext: : " + e.toString());
+                Log.d(TAG, "onError: : " + e.toString());
 
             }
 
@@ -62,5 +65,64 @@ private static  final String TAG=MainActivity.class.getName();
         });
     }
 
+    private void flowable(){
+//flowable with backpressure
+     Flowable<Integer> flowableLarge=  Flowable.range(0, 1000000)
+             .subscribeOn(Schedulers.io()) // designate worker thread (background)
+              .onBackpressureBuffer()
+             .observeOn(AndroidSchedulers.mainThread());
+        Observable<Integer> backToObservable = flowableLarge.toObservable();
+        backToObservable .subscribe(new Observer<Integer>() {
+
+            @Override
+            public void onSubscribe(Disposable d) {
+
+            }
+
+            @Override
+                    public void onNext(Integer integer) {
+                        Log.d(TAG, "onNext: first " + integer);
+                    }
+                    @Override
+                    public void onError(Throwable t) {
+                        Log.e(TAG, "onError: first ", t);
+                    }
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
+
+
+        // flowable to observer
+
+       /* Observable<Integer> observable = Observable
+                .range(1, 100000);
+
+        Flowable<Integer> flowable = observable.toFlowable(BackpressureStrategy.BUFFER);
+
+        Observable<Integer> backToObservable = flowable.toObservable();
+        backToObservable.subscribe(new Observer<Integer>() {
+            @Override
+            public void onSubscribe(Disposable d) {
+                Log.d(TAG, "onSubscribe: " + d.toString());
+            }
+
+            @Override
+            public void onNext(Integer integer) {
+                Log.d(TAG, "onNext: " + integer);
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                Log.d(TAG, "onError: " + e.toString());
+            }
+
+            @Override
+            public void onComplete() {
+                Log.d(TAG, "onComplete: ");
+            }
+        });*/
+    }
 
 }
