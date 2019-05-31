@@ -7,4 +7,3 @@ Below are some of the most common transformation operators that I think you'll f
 
 Map:-
 Applies to a function each emitted item.It transforms each emitted item by applying a function to it.
-https://codingwithmitch.s3.amazonaws.com/static/courses/lectures/274/Buffer.png
