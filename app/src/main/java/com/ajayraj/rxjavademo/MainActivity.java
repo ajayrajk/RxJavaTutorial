@@ -11,6 +11,8 @@ import com.ajayraj.rxjavademo.model.Task;
 
 import io.reactivex.Flowable;
 import io.reactivex.Observable;
+import io.reactivex.ObservableEmitter;
+import io.reactivex.ObservableOnSubscribe;
 import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
@@ -28,6 +30,50 @@ private static  final String TAG=MainActivity.class.getName();
 
         inIt();
         flowable();
+        createOprator();
+    }
+
+    private void createOprator(){
+
+        // Instantiate the object to become an Observable
+        final Task task = new Task("Walk the dog", false, 4);
+
+        // Create the Observable
+        Observable<Task> singleTaskObservable = Observable
+                .create(new ObservableOnSubscribe<Task>() {
+                    @Override
+                    public void subscribe(ObservableEmitter<Task> emitter) throws Exception {
+                        if(!emitter.isDisposed()){
+                            emitter.onNext(task);
+                            emitter.onComplete();
+                        }
+                    }
+                })
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread());
+
+       // Subscribe to the Observable and get the emitted object
+        singleTaskObservable.subscribe(new Observer<Task>() {
+            @Override
+            public void onSubscribe(Disposable d) {
+
+            }
+
+            @Override
+            public void onNext(Task task) {
+                Log.d(TAG, "create onNext: single task: create" + task.getDescription());
+            }
+
+            @Override
+            public void onError(Throwable e) {
+
+            }
+
+            @Override
+            public void onComplete() {
+
+            }
+        });
     }
 
     private  void inIt(){
@@ -69,7 +115,8 @@ private static  final String TAG=MainActivity.class.getName();
 
     private void flowable(){
 //flowable with backpressure
-     Flowable<Integer> flowableLarge=  Flowable.range(0, 1000000)
+        //it is use for large range up to 1 to 10000000..
+     Flowable<Integer> flowableLarge=  Flowable.range(0, 100)
              .subscribeOn(Schedulers.io()) // designate worker thread (background)
               .onBackpressureBuffer()
              .observeOn(AndroidSchedulers.mainThread());
