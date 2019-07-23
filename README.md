@@ -37,7 +37,7 @@ Output:Observable<T>
  1. Ensures your UI matches your data state.
  2. No memory leaks.
  3. No crashes due to stopped activities.
-        If the observer's lifecycle is inactive, such as in the case of an activity in the back stack, then it doesn’t receive any                LiveData events
+              :---- If the observer's lifecycle is inactive, such as in the case of an activity in the back stack, then it doesn’t receive any   LiveData events
  4. No more manual lifecycle handling.
  5. Always up to date data.
  6. Proper configuration changes.
