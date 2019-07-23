@@ -31,7 +31,20 @@ Input:T
 Output:Observable<T>
   
   
-  
+  # Android LiveData
+   #LiveData is a part of the architecture patterns. It’s basically a data holder that contains primitive/collection types. 
+     It’s used  for   observing changes in the view and updating the view when it is ACTIVE. Thus, LiveData is lifecycle aware.
+   #LiveData is based on the Observer Pattern and makes the communication between the ViewModel and View easy.
+   #It observes for data changes and updates the data automatically instead of us doing multiple calls in adding and 
+     deleting data   references from multiple places (for example SQLite, ArrayList, ViewModel).
+     
+   # LiveData is just a data type which notifies it’s observer whenever the data is changed. LiveData is like a data changed notifier.
+   # LiveData notifies the observer using setValue() and postValue().
+
+            setValue() runs on the main thread.
+
+            postValue() runs on the background thread.
+            
  # Advantage of LiveData:
   
  1. Ensures your UI matches your data state.
