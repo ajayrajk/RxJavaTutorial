@@ -32,7 +32,7 @@ Output:Observable<T>
   
   
   
-  Advantage of LiveData:
+ # Advantage of LiveData:
   
  1. Ensures your UI matches your data state.
  2. No memory leaks.
