@@ -29,6 +29,22 @@ create()  :----
 ----------------------------------------------------
 Input:T
 Output:Observable<T>
+  
+  
+  
+  Advantage of LiveData:
+  
+ 1. Ensures your UI matches your data state.
+ 2. No memory leaks.
+ 3. No crashes due to stopped activities.
+ 4. No more manual lifecycle handling.
+ 5. Always up to date data.
+ 6. Proper configuration changes.
+ 7. Sharing resources.
+ 
+
+
+
 
 
 
